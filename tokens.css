@@ -1,0 +1,124 @@
+/* Hallmark · route: custom (tuned) · theme: cream & walnut
+ * paper: oklch(96.8% 0.022 85) · accent: oklch(48% 0.12 52) · display: grotesk-sans
+ * axes: warm cream / grotesk / brown · gates: structure unchanged
+ *
+ * Portable token export. Consumed by Tailwind v4 via the `@theme` at-rule below,
+ * which also emits every variable onto :root in the compiled stylesheet.
+ * To use this file without Tailwind, change `@theme` to `:root`.
+ */
+
+@theme {
+  /* ---- Paper: dairy cream, never #fff ---------------------------------- */
+  --color-paper: oklch(96.8% 0.022 85);
+  --color-paper-2: oklch(94.4% 0.026 82);
+  --color-paper-3: oklch(91.6% 0.032 80);
+
+  /* ---- Hairlines do the structural work -------------------------------- */
+  /* rule divides content, so it only needs to be seen, not identified. */
+  --color-rule: oklch(86% 0.034 78);
+  /* rule-2 outlines controls — inputs, quiet buttons, chips — so it carries
+   * WCAG 1.4.11's 3:1 boundary requirement. */
+  --color-rule-2: oklch(56% 0.055 58);
+
+  /* ---- Ink: espresso brown, never #000 --------------------------------- */
+  /* Every step clears 4.5:1 against paper, paper-2 AND paper-3. */
+  --color-ink: oklch(22% 0.045 52);
+  --color-ink-2: oklch(32% 0.042 54);
+  --color-neutral: oklch(40% 0.038 56);
+  --color-muted: oklch(50% 0.032 58);
+  /* Decorative separators and disabled glyphs only. Does not reach 4.5:1 and
+   * must never carry information. */
+  --color-faint: oklch(72% 0.028 75);
+
+  /* ---- The one signal accent: walnut ----------------------------------- */
+  --color-accent: oklch(48% 0.12 52);
+  /* Text-and-fill variant: darker brown so type on cream stays readable. */
+  --color-accent-strong: oklch(40% 0.11 50);
+  --color-accent-ink: oklch(97% 0.02 85);
+  --color-accent-quiet: oklch(93.5% 0.04 80);
+  /* Score bars on the light instrument panel. */
+  --color-accent-on-dark: oklch(40% 0.11 50);
+
+  /* Focus sits on paper via outline-offset, so it is measured against paper. */
+  --color-focus: oklch(38% 0.1 50);
+
+  /* ---- Instrument panel (score band) ---------------------------------- */
+  /* Light mode: a slightly toasted cream slab. Dark mode remaps in globals.css. */
+  --color-graphite: oklch(94.4% 0.026 82);
+  --color-graphite-2: oklch(91.6% 0.032 80);
+  --color-graphite-rule: oklch(86% 0.034 78);
+  --color-on-graphite: oklch(22% 0.045 52);
+  --color-on-graphite-2: oklch(32% 0.042 54);
+  --color-on-graphite-muted: oklch(50% 0.032 58);
+
+  /* ---- Verdict ramp: monochrome brown ---------------------------------- */
+  /* Verdict is carried by glyph + text label + ink weight, never colour alone. */
+  --color-verdict-met: oklch(22% 0.045 52);
+  --color-verdict-partial: oklch(36% 0.04 54);
+  --color-verdict-missing: oklch(50% 0.032 58);
+
+  /* ---- Second chromatic hue, reserved for two jobs --------------------- */
+  /* Rust, distinct from walnut, for unverified evidence and honest gaps. */
+  --color-warn: oklch(50% 0.14 32);
+  --color-warn-quiet: oklch(94% 0.03 50);
+
+  /* ---- Type: Space Grotesk display · Inter body · JetBrains Mono readout */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* ---- Scale: 1.25 major third off a 16px body ------------------------- */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5625rem;
+  --text-xl: 1.9531rem;
+  --text-2xl: 2.4414rem;
+  --text-display-s: clamp(1.9531rem, 3vw + 0.5rem, 2.4414rem);
+  --text-display: clamp(2.1rem, 4vw + 0.5rem, 3.0518rem);
+  /* Single figure, under 12ch, so it may exceed the 5.5rem display ceiling. */
+  --text-score: clamp(3.25rem, 7vw + 1rem, 5rem);
+
+  /* ---- Space: 4pt scale, named by role --------------------------------- */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 9rem;
+
+  /* ---- Radii: drawn with a ruler --------------------------------------- */
+  /* inner sits inside control, for a nested surface like a segmented button. */
+  --radius-inner: 4px;
+  --radius-control: 6px;
+  --radius-panel: 10px;
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+
+  /* ---- Depth: one whisper shadow, six named z levels ------------------- */
+  --shadow-whisper: 0 1px 2px oklch(22% 0.045 52 / 0.06);
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* ---- Measure --------------------------------------------------------- */
+  --rule: 1px;
+  --measure: 65ch;
+  --measure-tight: 46ch;
+}

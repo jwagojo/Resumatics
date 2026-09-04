@@ -1,0 +1,25 @@
+{
+  "builds": [
+    {
+      "date": "2026-09-02",
+      "surface": "app/page.tsx — résumé / posting fit analyzer, static frontend",
+      "genre": "modern-minimal",
+      "macrostructure": "Workbench",
+      "theme": "Cobalt",
+      "anchorHue": 256,
+      "archetypes": {
+        "nav": "N9 edge-aligned minimal (bordered bar)",
+        "hero": "H2 split diptych 5/7",
+        "stat": "H4 stat-led (graphite instrument band)",
+        "feature": "F3 tabular spec sheet",
+        "footer": "Ft2 inline single line"
+      },
+      "enrichment": "none",
+      "deviations": [
+        "No command palette, though Cobalt makes one its signature interactive move — a single-purpose analyzer has nothing to command.",
+        "No window chrome on the graphite band. Gate 47 bans re-drawn chrome and outranks the theme's code-card signature; a typographic frame replaces it."
+      ],
+      "notes": "Next build. Any future Hallmark surface in this repo must not reuse Workbench or the H2 diptych."
+    }
+  ]
+}

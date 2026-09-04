@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Resumatics logo mark</title>
+  <desc id="desc">Two precise geometric planes align around a check-shaped opening.</desc>
+  <rect width="1024" height="1024" fill="#FFFFFF"/>
+  <g fill="#633B2B">
+    <path d="M256 272H704L528 448L432 352V544L256 720V272Z"/>
+    <path d="M768 752H320L496 576L592 672V480L768 304V752Z"/>
+  </g>
+</svg>
