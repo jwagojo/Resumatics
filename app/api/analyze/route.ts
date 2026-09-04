@@ -26,17 +26,7 @@ type StreamEvent = StageEvent | ResultEvent | ErrorEvent;
 function jobMeta(
   title: string,
   company: string,
-  mode: string,
-  job: string,
 ): JobPosting {
-  if (mode === "url") {
-    return {
-      title,
-      company,
-      source: "pasted",
-      sourceLabel: job.trim() || "Job URL",
-    };
-  }
   return {
     title,
     company,
@@ -77,6 +67,14 @@ export async function POST(request: Request) {
         }
         if (job.trim().length === 0) {
           emit({ type: "error", message: "Add a job posting to continue." });
+          return;
+        }
+        if (mode !== "paste" || /^https?:\/\/\S+$/i.test(job.trim())) {
+          emit({
+            type: "error",
+            message:
+              "Direct job links are not supported yet. Paste the full job description instead.",
+          });
           return;
         }
 
@@ -133,12 +131,7 @@ export async function POST(request: Request) {
         emit({
           type: "result",
           analysis: {
-            job: jobMeta(
-              extracted.job.title,
-              extracted.job.company,
-              mode,
-              job,
-            ),
+            job: jobMeta(extracted.job.title, extracted.job.company),
             resumeFilename: file.name,
             resumeText,
             requirements: extracted.requirements,

@@ -4,8 +4,9 @@ import { useMemo, useRef, useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { AppFooter } from "@/components/AppFooter";
 import { ResumeDrop } from "@/components/ResumeDrop";
-import { JobInput, type JobMode } from "@/components/JobInput";
+import { JobInput } from "@/components/JobInput";
 import { AnalyzeBar } from "@/components/AnalyzeBar";
+import { OllamaStatus } from "@/components/OllamaStatus";
 import { ScorePanel } from "@/components/ScorePanel";
 import { RequirementTable } from "@/components/RequirementTable";
 import { Recommendations } from "@/components/Recommendations";
@@ -52,10 +53,9 @@ export default function Page() {
   const [phase, setPhase] = useState<Phase>("input");
   const [stageIndex, setStageIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [ollamaReady, setOllamaReady] = useState(false);
 
   const [resume, setResume] = useState<File | null>(null);
-  const [jobMode, setJobMode] = useState<JobMode>("url");
-  const [jobUrl, setJobUrl] = useState("");
   const [jobText, setJobText] = useState("");
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [savingPdf, setSavingPdf] = useState(false);
@@ -77,9 +77,11 @@ export default function Page() {
   );
   const unverifiedCount = countUnverified(verdicts);
 
+  const jobValue = jobText.trim();
   const jobReady =
-    jobMode === "url" ? jobUrl.trim().length > 0 : jobText.trim().length > 40;
-  const canAnalyze = resume !== null && jobReady && phase !== "analyzing";
+    jobValue.length > 40 && !/^https?:\/\/\S+$/i.test(jobValue);
+  const canAnalyze =
+    ollamaReady && resume !== null && jobReady && phase !== "analyzing";
 
   async function startAnalysis() {
     if (resume === null) return;
@@ -94,8 +96,8 @@ export default function Page() {
 
     const form = new FormData();
     form.append("file", resume);
-    form.append("job", jobMode === "url" ? jobUrl : jobText);
-    form.append("mode", jobMode);
+    form.append("job", jobText);
+    form.append("mode", "paste");
 
     try {
       const response = await fetch("/api/analyze", {
@@ -178,7 +180,6 @@ export default function Page() {
     setStageIndex(0);
     setError(null);
     setResume(null);
-    setJobUrl("");
     setJobText("");
     setAnalysis(null);
   }
@@ -307,6 +308,8 @@ export default function Page() {
               ) : (
                 <div className="rise panel p-md sm:p-lg">
                   <div className="grid gap-lg">
+                    <OllamaStatus onReadyChange={setOllamaReady} />
+
                     {error !== null && (
                       <p className="helper" data-tone="error">
                         {error}
@@ -317,10 +320,6 @@ export default function Page() {
 
                     <div className="border-t border-rule pt-lg">
                       <JobInput
-                        mode={jobMode}
-                        onModeChange={setJobMode}
-                        url={jobUrl}
-                        onUrlChange={setJobUrl}
                         text={jobText}
                         onTextChange={setJobText}
                       />
@@ -330,7 +329,9 @@ export default function Page() {
                       <p className="text-xs text-muted">
                         {canAnalyze
                           ? "Runs locally on Ollama. You can cancel mid-run."
-                          : "Add a résumé and a posting to continue."}
+                          : !ollamaReady
+                            ? "Finish local model setup above to continue."
+                            : "Add a résumé and a posting to continue."}
                       </p>
                       <button
                         type="button"

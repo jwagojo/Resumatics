@@ -52,6 +52,41 @@ function modelName(): string {
   return process.env.OLLAMA_MODEL ?? "llama3.1:8b";
 }
 
+export type OllamaReadiness = {
+  status: "ready" | "missing_model" | "unreachable";
+  model: string;
+  installedModels: string[];
+};
+
+function isInstalled(model: string, installed: string[]): boolean {
+  const expected = model.includes(":") ? model : `${model}:latest`;
+  return installed.some((name) => name === model || name === expected);
+}
+
+/** A request-time preflight used by the setup card before analysis starts. */
+export async function getOllamaReadiness(): Promise<OllamaReadiness> {
+  const model = modelName();
+  const client = new Ollama({
+    host: process.env.OLLAMA_BASE_URL ?? "http://localhost:11434",
+  });
+
+  try {
+    const { models } = await client.list();
+    const installedModels = models.map((item) => item.name);
+    return {
+      status: isInstalled(model, installedModels) ? "ready" : "missing_model",
+      model,
+      installedModels,
+    };
+  } catch {
+    return {
+      status: "unreachable",
+      model,
+      installedModels: [],
+    };
+  }
+}
+
 async function installedModelNames(): Promise<string[]> {
   try {
     const { models } = await ollama.list();
